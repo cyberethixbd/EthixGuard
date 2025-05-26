@@ -11,10 +11,12 @@ echo "OS: $(getprop ro.build.version.release)"
 echo "IP Address: $(ip a | grep 'inet ' | grep -v 127 | awk '{print $2}' | head -n1)"
 echo "Root Access: $(su -c \"echo YES\" 2>/dev/null || echo NO)"
 
-read -p "Enter Banner Name (e.g., Cyber Ethic): " BANNER_NAME
-read -p "Enter Tagline 1 (optional): " TAG1
-read -p "Enter Tagline 2 (optional): " TAG2
-read -p "Enter Tagline 3 (optional): " TAG3
+
+
+read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
+read -p "Enter Tagline 1(Optional): " TAG1
+read -p "Enter Tagline 2(Optional): " TAG2
+read -p "Enter Tagline 3(Optional): " TAG3
 
 # ============ Option Menu ============
 echo -e "\n\033[1;36mSelect an Option:\033[0m"
@@ -81,37 +83,12 @@ source \$ZSH/oh-my-zsh.sh
 if [ -z "\$BANNER_SHOWN" ]; then
   export BANNER_SHOWN=true
   clear
-#!/bin/bash
-
-# রঙের তালিকা (green, red, blue)
-COLORS=("\033[1;32m" "\033[1;31m" "\033[1;34m")
-
-# রঙ ট্র্যাক রাখার জন্য একটি ফাইল
-COLOR_INDEX_FILE="$HOME/.cyber_color_index"
-
-# প্রথমবার রান করলে ফাইল তৈরি করে 0 সেট করব
-if [ ! -f "$COLOR_INDEX_FILE" ]; then
-  echo 0 > "$COLOR_INDEX_FILE"
-fi
-
-# আগের রঙের ইনডেক্স পড়া
-INDEX=$(cat "$COLOR_INDEX_FILE")
-
-# বর্তমান রঙ নির্বাচন
-CURRENT_COLOR=${COLORS[$INDEX]}
-
-# পরবর্তী ইনডেক্স সেট (লুপ করে যাবে)
-NEXT_INDEX=$(( (INDEX + 1) % ${#COLORS[@]} ))
-echo $NEXT_INDEX > "$COLOR_INDEX_FILE"
-
-# আপনার বাকি স্ক্রিপ্ট
-figlet -f small "$BANNER_NAME" | lolcat
-echo -e "\033[1;32m$TAG1"
-echo -e "\033[1;36m$TAG2"
-echo -e "\033[1;35m$TAG3"
-echo -e "\033[1;33mDate : $(date '+%d-%m-%Y')\033[0m"
-echo -e "${CURRENT_COLOR}Time : $(date '+%I:%M:%S %p')\033[0m"
-
+  figlet -f small "$BANNER_NAME" | lolcat
+  echo -e "\033[1;32m$TAG1"
+  echo -e "\033[1;36m$TAG2"
+  echo -e "\033[1;35m$TAG3"
+  echo -e "\033[1;33mDate : \$(date '+%d-%m-%Y')\033[0m"
+  echo -e "\033[1;34mTime : \$(date '+%I:%M:%S %p')\033[0m"
 
   correct_password=\$(openssl enc -aes-256-cbc -d -in ~/.pass.enc -k secret_key 2>/dev/null)
   attemptfile="\$HOME/.termux_attempt"
@@ -150,7 +127,7 @@ echo -e "${CURRENT_COLOR}Time : $(date '+%I:%M:%S %p')\033[0m"
     fi
   done
 
-  for c in W e l c o m e \  t o \  y o u r \ C y b e r \ T e r m i n a l  . . .; do echo -n "\$c"; sleep 0.03; done
+  for c in W e l c o m e \  t o \  y o y r \ c y b e r \ t e r m i n a l . . .; do echo -n "\$c"; sleep 0.03; done
   echo -e "\n\033[1;90m[ Press any key to continue... ]\033[0m"; read -n 1; clear
 fi
 
@@ -174,5 +151,8 @@ rm -f /data/data/com.termux/files/usr/etc/motd
 # Avoid changing shell interactively; assume already zsh or let Termux handle it
 # chsh -s zsh
 clear
-echo -e "\e[1;31m[✓] .....Setup Complete!....." | lolcat --spread=3 --speed=20
-echo -e "\e[1;32m....These tools were developed by Cyber ​​Ethix BD..\nRestart Termux to apply your custom Cyber Terminal.\e[0m" | lolcat --spread=3 --speed=20 --reverse
+echo -e "\n\033[1;34m[ These tools were developed by Cyber ​​Ethix BD. ]\033[0m"
+echo -e "\033[1;32m[✓] ..........Setup Complete!
+....Restart Termux to apply 
+your custom Cyber Terminal.\033[0m" | lolcat
+
