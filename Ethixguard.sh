@@ -174,4 +174,4 @@ echo -e "\033[1;33mYour custom Cyber Terminal is ready!\033[0m" | lolcat
 sleep 0.5
 echo -e "\n\033[1;35m[ Press any key to restart your terminal session... ]\033[0m" | lolcat
 read -n 1 -s
-source ~/.zshrc
+exec zsh
