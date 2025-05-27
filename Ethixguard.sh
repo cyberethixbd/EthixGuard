@@ -10,6 +10,11 @@ echo "OS: $(getprop ro.build.version.release)"
 echo "IP Address: $(ip a | grep 'inet ' | grep -v 127 | awk '{print $2}' | head -n1)"
 echo "Root Access: $(su -c "echo YES" 2>/dev/null || echo NO)"
 
+# ============ User Input ============
+read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
+read -p "Enter Tagline 1 (Optional): " TAG1
+read -p "Enter Tagline 2 (Optional): " TAG2
+read -p "Enter Tagline 3 (Optional): " TAG3
 
 # ============ Option Menu ============
 echo -e "\n\033[1;36mSelect an Option:\033[0m"
@@ -17,13 +22,6 @@ echo "1. Install"
 echo "2. Reset Configuration"
 echo "3. Uninstall"
 read -p "Enter your choice (1/2/3): " OPTION
-
-# ============ User Input ============
-read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
-read -p "Enter Tagline 1 (Optional): " TAG1
-read -p "Enter Tagline 2 (Optional): " TAG2
-read -p "Enter Tagline 3 (Optional): " TAG3
-
 
 if [[ "$OPTION" == "2" ]]; then
   cp ~/.zshrc.bak ~/.zshrc && echo "Restored previous .zshrc backup. Restart Termux."
@@ -164,16 +162,11 @@ fi
 EOF
 
 # ============ Finish ============
-# ============ Finish ============
 rm -f /data/data/com.termux/files/usr/etc/motd
 clear
 echo -e "\n\033[1;34m[ These tools were developed by Cyber Ethix BD. ]\033[0m"
 echo -e "\n\033[1;32m[✓] .......... Setup Complete! \033[0m" | lolcat
 sleep 0.5
-echo -e "\033[1;36m....Restarting Termux to apply\033[0m" | lolcat
+echo -e "\033[1;36m....Restarting Termux to apply...\033[0m" | lolcat
 sleep 0.5
-echo -e "\033[1;33mYour custom Cyber Terminal is ready!\033[0m" | lolcat
-sleep 0.5
-echo -e "\n\033[1;35m[ Press any key to restart your terminal session... ]\033[0m" | lolcat
-read -n 1 -s
 exec zsh
