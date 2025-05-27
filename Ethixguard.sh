@@ -8,7 +8,7 @@ echo -e "\n\033[1;33m[ Device Information ]\033[0m"
 echo "Device: $(getprop ro.product.model)"
 echo "OS: $(getprop ro.build.version.release)"
 echo "IP Address: $(ip a | grep 'inet ' | grep -v 127 | awk '{print $2}' | head -n1)"
-echo "Root Access: $(su -c \"echo YES\" 2>/dev/null || echo NO)"
+echo "Root Access: $(su -c "echo YES" 2>/dev/null || echo NO)"
 
 # ============ User Input ============
 read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
@@ -78,15 +78,16 @@ ZSH_THEME=""
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source \$ZSH/oh-my-zsh.sh
 
+# Display banner and taglines once per session
 if [ -z "\$BANNER_SHOWN" ]; then
   export BANNER_SHOWN=true
   clear
   figlet -f small "$BANNER_NAME" | lolcat
-  echo -e "\033[1;32m$TAG1"
-  echo -e "\033[1;36m$TAG2"
-  echo -e "\033[1;35m$TAG3"
-  echo -e "\033[1;33mDate : \$(date '+%d-%m-%Y')\033[0m"
-  echo -e "\033[1;34mTime : \$(date '+%I:%M:%S %p')\033[0m"
+  echo -e "\\033[1;32m$TAG1"
+  echo -e "\\033[1;36m$TAG2"
+  echo -e "\\033[1;35m$TAG3"
+  echo -e "\\033[1;33mDate : \$(date '+%d-%m-%Y')\\033[0m"
+  echo -e "\\033[1;34mTime : \$(date '+%I:%M:%S %p')\\033[0m"
 
   correct_password=\$(openssl enc -aes-256-cbc -d -in ~/.pass.enc -k secret_key 2>/dev/null)
   attemptfile="\$HOME/.termux_attempt"
@@ -94,10 +95,11 @@ if [ -z "\$BANNER_SHOWN" ]; then
   logfile="\$HOME/.termux_log"
   max_attempts=5
 
+  # Lock check
   if [ -f "\$lockfile" ]; then
     locktime=\$(cat "\$lockfile")
     if (( \$(date +%s) < locktime )); then
-      echo "Terminal locked. Try again later."
+      echo -e "\\nToo many incorrect attempts. Terminal locked. Try again later."
       exit
     else
       rm -f "\$lockfile" "\$attemptfile"
@@ -108,42 +110,58 @@ if [ -z "\$BANNER_SHOWN" ]; then
   while [[ \$attempts -lt \$max_attempts ]]; do
     echo -n "Enter Password: "; read -s input_password; echo ""
     if [[ "\$input_password" == "\$correct_password" ]]; then
-      echo "Access granted."; echo "[\$(date)] LOGIN SUCCESS" >> "\$logfile"
+      echo "Access granted."
+      echo "[\$(date)] LOGIN SUCCESS" >> "\$logfile"
       rm -f "\$attemptfile"
-      printf '\a'
+      printf '\\a'  # beep sound
       break
     else
       attempts=\$((attempts + 1))
       echo "\$attempts" > "\$attemptfile"
       echo "[\$(date)] Wrong password attempt \$attempts" >> "\$logfile"
-      echo -e "Incorrect password. Attempts left: \$((max_attempts - attempts))"
+      echo -e "\\nIncorrect password. Attempts left: \$((max_attempts - attempts))"
     fi
     if [[ \$attempts -eq \$max_attempts ]]; then
-      wait_time=600; echo \$((\$(date +%s) + wait_time)) > "\$lockfile"
-      echo "Terminal locked for 10 minutes."; echo "[\$(date)] Terminal locked." >> "\$logfile"
+      wait_time=600
+      echo \$((\$(date +%s) + wait_time)) > "\$lockfile"
+      echo -e "\\nToo many incorrect attempts. Terminal locked for 10 minutes."
+      echo "[\$(date)] Terminal locked." >> "\$logfile"
       exit
     fi
   done
 
-  for c in W e l c o m e \  t o \  y o u r \  c y b e r \  t e r m i n a l . . .; do echo -n "\$c"; sleep 0.03; done
-  echo -e "\n\033[1;90m[ Press any key to continue... ]\033[0m"; read -n 1; clear
+  # Welcome message with typing effect
+  text="Welcome to your cyber terminal..."
+  for ((i=0; i<\${#text}; i++)); do
+    echo -n "\${text:\$i:1}"
+    sleep 0.03
+  done
+  echo -e "\\n\\033[1;90m[ Press any key to continue... ]\\033[0m"
+  read -n 1
+  clear
 fi
 
-precmd() { echo -e "\033[1;94m\$(date '+%I:%M:%S %p')\033[0m"; }
+# Function to show time above the prompt
+function show_time() {
+  echo -e "\\033[1;94m\$(date '+%I:%M:%S %p')\\033[0m"
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd show_time
 
-# Load theme from ~/.ethix_theme
+# Prompt with custom username and hostname from user input
 THEME_NUM=\$(cat ~/.ethix_theme 2>/dev/null)
 if [[ \$THEME_NUM == "1" ]]; then
-  export PROMPT='%F{green}$USERNAME@%F{white}$HOSTNAME %F{blue}%~ %f\$ '
+  export PROMPT='%F{green}'"$USERNAME"'@%F{white}'"$HOSTNAME"' %F{blue}%~ %f\$ '
 elif [[ \$THEME_NUM == "2" ]]; then
-  export PROMPT='%F{white}$USERNAME@$HOSTNAME %~ %f\$ '
+  export PROMPT='%F{white}'"$USERNAME"'@'"$HOSTNAME"' %~ %f\$ '
 elif [[ \$THEME_NUM == "3" ]]; then
-  export PROMPT='%F{magenta}$USERNAME%f@%F{cyan}$HOSTNAME %F{yellow}%~ %f\$ '
+  export PROMPT='%F{magenta}'"$USERNAME"'%f@%F{cyan}'"$HOSTNAME"' %F{yellow}%~ %f\$ '
 else
-  export PROMPT='%F{green}$USERNAME@%F{cyan}$HOSTNAME %F{white}%~ %f\$ '
+  export PROMPT='%F{green}'"$USERNAME"'@%F{cyan}'"$HOSTNAME"' %F{white}%~ %f\$ '
 fi
 EOF
 
+# ============ Finish ============
 # ============ Finish ============
 rm -f /data/data/com.termux/files/usr/etc/motd
 clear
@@ -157,6 +175,3 @@ sleep 0.5
 echo -e "\n\033[1;35m[ Press any key to restart your terminal session... ]\033[0m" | lolcat
 read -n 1 -s
 source ~/.zshrc
-
-
-
