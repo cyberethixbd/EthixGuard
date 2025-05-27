@@ -169,4 +169,5 @@ echo -e "\n\033[1;32m[✓] .......... Setup Complete! \033[0m" | lolcat
 sleep 0.5
 echo -e "\033[1;36m....Restarting Termux to apply...\033[0m" | lolcat
 sleep 0.5
+chsh -s zsh
 exec zsh
