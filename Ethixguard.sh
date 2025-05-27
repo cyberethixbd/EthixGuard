@@ -3,7 +3,6 @@
 # ============ Banner & Input Section ============
 echo -e "\n\033[1;34m[ EthixGuard Secure Terminal Setup ]\033[0m"
 
-
 # ============ Device Info & Root Checker ============
 echo -e "\n\033[1;33m[ Device Information ]\033[0m"
 echo "Device: $(getprop ro.product.model)"
@@ -11,12 +10,11 @@ echo "OS: $(getprop ro.build.version.release)"
 echo "IP Address: $(ip a | grep 'inet ' | grep -v 127 | awk '{print $2}' | head -n1)"
 echo "Root Access: $(su -c \"echo YES\" 2>/dev/null || echo NO)"
 
-
-
+# ============ User Input ============
 read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
-read -p "Enter Tagline 1(Optional): " TAG1
-read -p "Enter Tagline 2(Optional): " TAG2
-read -p "Enter Tagline 3(Optional): " TAG3
+read -p "Enter Tagline 1 (Optional): " TAG1
+read -p "Enter Tagline 2 (Optional): " TAG2
+read -p "Enter Tagline 3 (Optional): " TAG3
 
 # ============ Option Menu ============
 echo -e "\n\033[1;36mSelect an Option:\033[0m"
@@ -127,7 +125,7 @@ if [ -z "\$BANNER_SHOWN" ]; then
     fi
   done
 
-  for c in W e l c o m e \  t o \  y o y r \ c y b e r \ t e r m i n a l . . .; do echo -n "\$c"; sleep 0.03; done
+  for c in W e l c o m e \  t o \  y o u r \  c y b e r \  t e r m i n a l . . .; do echo -n "\$c"; sleep 0.03; done
   echo -e "\n\033[1;90m[ Press any key to continue... ]\033[0m"; read -n 1; clear
 fi
 
@@ -136,23 +134,29 @@ precmd() { echo -e "\033[1;94m\$(date '+%I:%M:%S %p')\033[0m"; }
 # Load theme from ~/.ethix_theme
 THEME_NUM=\$(cat ~/.ethix_theme 2>/dev/null)
 if [[ \$THEME_NUM == "1" ]]; then
-  export PROMPT='%F{green} $USERNAME@%F{white} $HOSTNAME %F{blue}%~ %f\$ '
+  export PROMPT='%F{green}$USERNAME@%F{white}$HOSTNAME %F{blue}%~ %f\$ '
 elif [[ \$THEME_NUM == "2" ]]; then
-  export PROMPT='%F{white} $USERNAME@$HOSTNAME %~ %f\$ '
+  export PROMPT='%F{white}$USERNAME@$HOSTNAME %~ %f\$ '
 elif [[ \$THEME_NUM == "3" ]]; then
   export PROMPT='%F{magenta}$USERNAME%f@%F{cyan}$HOSTNAME %F{yellow}%~ %f\$ '
 else
-  export PROMPT='%F{green} $USERNAME@%F{cyan} $HOSTNAME %F{white}%~ %f\$ '
+  export PROMPT='%F{green}$USERNAME@%F{cyan}$HOSTNAME %F{white}%~ %f\$ '
 fi
 EOF
 
 # ============ Finish ============
 rm -f /data/data/com.termux/files/usr/etc/motd
-# Avoid changing shell interactively; assume already zsh or let Termux handle it
-# chsh -s zsh
 clear
-echo -e "\n\033[1;34m[ These tools were developed by Cyber ​​Ethix BD. ]\033[0m"
-echo -e "\033[1;32m[✓] ..........Setup Complete!
-....Restart Termux to apply 
-your custom Cyber Terminal.\033[0m" | lolcat
+echo -e "\n\033[1;34m[ These tools were developed by Cyber Ethix BD. ]\033[0m"
+echo -e "\n\033[1;32m[✓] .......... Setup Complete! \033[0m" | lolcat
+sleep 0.5
+echo -e "\033[1;36m....Restarting Termux to apply\033[0m" | lolcat
+sleep 0.5
+echo -e "\033[1;33mYour custom Cyber Terminal is ready!\033[0m" | lolcat
+sleep 0.5
+echo -e "\n\033[1;35m[ Press any key to restart your terminal session... ]\033[0m" | lolcat
+read -n 1 -s
+source ~/.zshrc
+
+
 
