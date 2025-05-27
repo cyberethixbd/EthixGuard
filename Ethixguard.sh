@@ -10,11 +10,6 @@ echo "OS: $(getprop ro.build.version.release)"
 echo "IP Address: $(ip a | grep 'inet ' | grep -v 127 | awk '{print $2}' | head -n1)"
 echo "Root Access: $(su -c "echo YES" 2>/dev/null || echo NO)"
 
-# ============ User Input ============
-read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
-read -p "Enter Tagline 1 (Optional): " TAG1
-read -p "Enter Tagline 2 (Optional): " TAG2
-read -p "Enter Tagline 3 (Optional): " TAG3
 
 # ============ Option Menu ============
 echo -e "\n\033[1;36mSelect an Option:\033[0m"
@@ -22,6 +17,13 @@ echo "1. Install"
 echo "2. Reset Configuration"
 echo "3. Uninstall"
 read -p "Enter your choice (1/2/3): " OPTION
+
+# ============ User Input ============
+read -p "Enter Banner Name (e.g., Cyber Ethix): " BANNER_NAME
+read -p "Enter Tagline 1 (Optional): " TAG1
+read -p "Enter Tagline 2 (Optional): " TAG2
+read -p "Enter Tagline 3 (Optional): " TAG3
+
 
 if [[ "$OPTION" == "2" ]]; then
   cp ~/.zshrc.bak ~/.zshrc && echo "Restored previous .zshrc backup. Restart Termux."
